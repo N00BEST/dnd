@@ -8,22 +8,88 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <style>
+        .cursor-pointer {
+            cursor: pointer;
+        }
+
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <table class="table mt-2">
+        <table class="table mt-2 fs-2">
             <tbody id="players-table">
                 <tr>
-                    <th scope="row">1</th>
-                    <td class="w-50">Mark</td>
+                    <th scope="row" class="player-position">1</th>
+                    <td class="w-50 player-name">Arturo</td>
                     <td class="d-flex justify-content-end">
                         <div class="input-group w-50">
-                            <input type="text" class="form-control" placeholder="Iniciativa" aria-label="Iniciativa" value="5">
+                            <input type="number" class="form-control player-initiative" placeholder="Iniciativa"
+                                aria-label="Iniciativa" value="10">
                         </div>
                     </td>
                     <td class="text-align-center">
-                        <i class="text-danger bi-trash delete"></i>
+                        <div class="form-control border-0 delete cursor-pointer" onclick="deleteRow">
+                            <i class="text-danger bi-trash"></i>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="player-position">2</th>
+                    <td class="w-50 player-name">Barbus</td>
+                    <td class="d-flex justify-content-end">
+                        <div class="input-group w-50">
+                            <input type="number" class="form-control player-initiative" placeholder="Iniciativa"
+                                aria-label="Iniciativa" value="10">
+                        </div>
+                    </td>
+                    <td class="text-align-center">
+                        <div class="form-control border-0 delete cursor-pointer" onclick="deleteRow">
+                            <i class="text-danger bi-trash"></i>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="player-position">3</th>
+                    <td class="w-50 player-name">Miniaikon</td>
+                    <td class="d-flex justify-content-end">
+                        <div class="input-group w-50">
+                            <input type="number" class="form-control player-initiative" placeholder="Iniciativa"
+                                aria-label="Iniciativa" value="10">
+                        </div>
+                    </td>
+                    <td class="text-align-center">
+                        <div class="form-control border-0 delete cursor-pointer" onclick="deleteRow">
+                            <i class="text-danger bi-trash"></i>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="player-position">4</th>
+                    <td class="w-50 player-name">Yrad</td>
+                    <td class="d-flex justify-content-end">
+                        <div class="input-group w-50">
+                            <input type="number" class="form-control player-initiative" placeholder="Iniciativa"
+                                aria-label="Iniciativa" value="10">
+                        </div>
+                    </td>
+                    <td class="text-align-center">
+                        <div class="form-control border-0 delete cursor-pointer" onclick="deleteRow">
+                            <i class="text-danger bi-trash"></i>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -36,26 +102,33 @@
                     <td class="w-50 player-name">Name</td>
                     <td class="d-flex justify-content-end">
                         <div class="input-group w-50">
-                            <input type="text" class="form-control player-initiative" placeholder="Iniciativa" aria-label="Iniciativa" value="0">
+                            <input type="number" class="form-control player-initiative" placeholder="Iniciativa"
+                                aria-label="Iniciativa" value="0">
                         </div>
                     </td>
                     <td class="text-align-center">
-                        <i class="text-danger bi-trash delete"></i>
+                        <div class="form-control border-0 delete cursor-pointer" onclick="deleteRow">
+                            <i class="text-danger bi-trash"></i>
+                        </div>
                     </td>
                 </tr>
             </table>
         </div>
     </div>
 
-    <div class="position-absolute bottom-0 start-0 end-0">
+    <div class="position-absolute bottom-0 start-0 end-0 fw-3">
         <div class="btn-group w-100 border-top rounded-0" role="group" aria-label="Basic mixed styles example">
-            <button type="button" class="btn rounded-0 btn-outline-info border-start-0 border-bottom-0"
+            <button type="button" class="btn btn-lg rounded-0 btn-outline-info border-start-0 border-bottom-0"
                 data-bs-toggle="modal" data-bs-target="#add-player">Agregar</button>
-            <button type="button" class="btn rounded-0 btn-primary">Recalcular</button>
+            <button type="button" class="btn btn-lg rounded-0 btn-primary" id="sort-players-table">Ordenar</button>
         </div>
     </div>
 
-    <button class="position-absolute bottom-0 end-0 mb-5 me-2 btn btn-success rounded-circle text-center fw-bold" type="button">&gt;</button>
+    <div class="position-absolute bottom-0 end-0 mb-3 me-3">
+        <button id="next-player"
+        class="mb-5 btn btn-lg px-4 py-3 btn-success rounded-circle text-center fw-bold"
+        type="button">&gt;</button>
+    </div>
 
     <div class="modal fade" tabindex="-1" id="add-player">
         <div class="modal-dialog modal-dialog-centered">
@@ -68,16 +141,19 @@
                 <div class="modal-body rounded-0">
                     <form id="add-player-form">
                         <div class="mb-3">
-                            <input class="form-control rounded-0 border-top-0 border-start-0 border-end-0" placeholder="Nombre, tipo..." id="add-player-name">
+                            <input class="form-control rounded-0 border-top-0 border-start-0 border-end-0"
+                                placeholder="Nombre, tipo..." id="add-player-name">
                         </div>
                         <div class="mb-3">
-                            <input type="number" class="form-control rounded-0 border-top-0 border-start-0 border-end-0" placeholder="Iniciativa" id="add-player-initiative">
+                            <input type="number" class="form-control rounded-0 border-top-0 border-start-0 border-end-0"
+                                placeholder="Iniciativa" id="add-player-initiative">
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer rounded-0">
+                <div class="modal-footer rounded-0" action="#">
                     <button type="button" class="btn btn-secondary rounded-0" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary rounded-0" id="add-player-button">Agregar</button>
+                    <button type="submit" form="add-player-form" class="btn btn-primary rounded-0"
+                        id="add-player-button">Agregar</button>
                 </div>
             </div>
         </div>
@@ -90,34 +166,122 @@
     <script>
         const playersTable = document.getElementById('players-table')
 
+        const rowTemplate = document.getElementById('row-template')
+
         const playersModal = new bootstrap.Modal(document.getElementById('add-player'))
         const addPlayerForm = document.getElementById('add-player-form')
         const newPlayerName = document.getElementById('add-player-name')
         const newPlayerInitiative = document.getElementById('add-player-initiative')
-        const addPlayerButton = document.getElementById('add-player-button')
 
-        const rowTemplate = document.getElementById('row-template')
+        const sortPlayersButton = document.getElementById('sort-players-table')
+
+        const nextPlayerButton = document.getElementById('next-player')
 
         let activePlayer = 0
 
-        const addPlayer = () => {
-            const name = newPlayerName.value;
-            const initiative = newPlayerInitiative.value;
+        const addPlayer = (evt) => {
+            evt.preventDefault()
+
+            const name = newPlayerName.value
+            const initiative = newPlayerInitiative.value
 
             const newRow = rowTemplate.cloneNode(true)
             const position = playersTable.children.length + 1
 
+            newRow.id = ""
+
             newRow.querySelector('.player-position').textContent = position
             newRow.querySelector('.player-name').textContent = name
             newRow.querySelector('.player-initiative').value = initiative
+
+            newRow.querySelector('.delete').addEventListener('click', deleteRow)
 
             playersTable.appendChild(newRow)
 
             playersModal.hide()
         }
 
+        const submitFormWithKey = (evt) => {
+            if (evt.keyCode !== 13)
+                return
+
+            const event = new CustomEvent('submit', {
+                bubbles: true,
+                cancelable: true
+            })
+
+            event.target = addPlayerForm
+
+            document.dispatchEvent(event)
+        }
+
+        const drawPlayersTable = (children) => {
+            playersTable.innerHTML = ""
+            let position = 1
+
+            for (let position in children) {
+                const child = children[position]
+
+                child.querySelector('.player-position').textContent = parseInt(position) + 1
+
+                playersTable.appendChild(child)
+            }
+        }
+
+        const sortTable = () => {
+            let children = Array.from(playersTable.children)
+
+            if (children.length <= 1)
+                return
+
+            children = children.sort((a, b) => {
+                const initiativeA = a.querySelector('input.player-initiative')
+                const initiativeB = b.querySelector('input.player-initiative')
+
+                return initiativeB.value - initiativeA.value
+            })
+
+            return drawPlayersTable(children)
+        }
+
+        const highlightNextPlayer = () => {
+            const highlightClass = 'table-primary'
+
+            if (playersTable.children.length < 1)
+                return
+
+            let activePlayerPosition = 0
+            let position = 0
+
+            for (let child of playersTable.children) {
+                if (child.classList.contains(highlightClass)) {
+                    activePlayerPosition = position + 1
+                    child.classList.remove(highlightClass)
+                    break
+                }
+
+                position++
+            }
+
+            if (activePlayerPosition >= playersTable.children.length)
+                activePlayerPosition = 0
+
+            playersTable.children[activePlayerPosition].classList.add(highlightClass)
+        }
+
+        const deleteRow = (evt) => {
+            console.log("working")
+            evt.target.closest('tr').remove()
+        }
+
         addEventListener('hidden.bs.modal', () => addPlayerForm.reset())
-        addPlayerButton.addEventListener('click', addPlayer)
+        addPlayerForm.addEventListener('submit', addPlayer)
+        addPlayerForm.addEventListener('keyup', submitFormWithKey)
+
+        sortPlayersButton.addEventListener('click', sortTable)
+        nextPlayerButton.addEventListener('click', highlightNextPlayer)
+
+        document.querySelectorAll('.delete').forEach(node => node.addEventListener('click', deleteRow))
     </script>
 </body>
 
